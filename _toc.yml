@@ -4,8 +4,6 @@
 format: jb-book
 root: intro
 chapters:
-- file: s01a-two_classifiers_intro
-- file: s01b-generalization_and_knowledge_models
-- file: markdown
-- file: notebooks
-- file: markdown-notebooks
+- file: introduction
+- file: modeling-knowledge
+- file: linear-methods
