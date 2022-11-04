@@ -6,4 +6,5 @@ root: intro
 chapters:
 - file: introduction
 - file: modeling-knowledge
+- file: filtering
 - file: linear-methods
