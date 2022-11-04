@@ -346,9 +346,9 @@ This is pretty slow but in the end we get quite a decent result. The right thing
 
 ## Which $k$ works best? 
 
-In the above example we chose the number of neighbors as $k = 31$ for no particular reason. Intutively, this value should have a marked effect on the behavior of our classifier. Let us try an ad hoc strategy to choose it
+In the above example we chose the number of neighbors as $k = 31$ for no particular reason. Intutively, this value should have a marked effect on the behavior of our classifier. Let us test many different values of $k$ to figure out which one is the best. Before we do that... we need to do something with the code above which is far too slow to run over and over for different $k$. The idea is to leverage fast mathematical primitives used by `numpy`, in particular matrix multiplication. To understand what the formula in the below code does, check out this [paper about Euclidean distance matrices](https://infoscience.epfl.ch/record/221380/files/EDM%283%29.pdf).
 
-```{code-cell} ipython3
+```{code-cell}
 
 ec = []
 G = X @ X.T # ref: EDMs -> hw
