@@ -15,9 +15,6 @@ kernelspec:
 
 # Filtering
 
-Here's a header
-
-
 ```{code-cell}
 :tags: [hide-input]
 
@@ -38,16 +35,35 @@ mpl.rcParams.update({'font.size': 12})
 We have seen that the discrete-time Fourier transform (or discrete-space Fourier transform) is a great tool to understand linear shift-invariant filtering of discrete signal and imaging. On the other hand, it is clear that in a computer we will only ever deal with finite-length signals, and in the case of images, often standardized dimensions. It is natural to ask whether there exists a tool similar to DTFT that is tailor-made for finite-length (finite-support) signals. This is also related to the fact that the frequency $\omega$ in DTFT is continuous: there are uncountably many possible values that it can take between $-\pi$ and $\pi$. But if our images are of size $64 \times 64 = 4096$ then we know that we can choose a 4096-dimensional basis to represent any image as a superposition of elements in that basis. It thus seems wasteful to use superpositions of an uncountable infinity complex exponentials with different frequency to represent such images.[^1]
 
 
-We'd like to have a Fourier transform for finite-length signals (say of length $N$), which requires only $N$ basis functions, or $N$ frequencies. A natural way to do that is to subdivide $[-\pi, pi)$ into $N$ intervals of equal length, that is to say, choose the sinusoids with discretized frequencies
+We'd like to have a Fourier transform for finite-length signals (say of length $N$), which requires only $N$ basis functions, or $N$ frequencies. A natural way to do that is to subdivide $[-\pi, \pi)$ into $N$ intervals of equal length, that is to say, choose the sinusoids with discretized frequencies
 
 $$
-  \omega_k = \frac{2\pi}{N}k, \ \text{for} \ k \in \{ 0, 1, \ldots, N - 1 \}
+  \omega_k = \frac{2\pi}{N}k, \ \text{for} \ k \in \{ 0, 1, \ldots, N - 1 \}.
 $$
+The corresponding base complex exponentials are the roots of unity. That is, $e^{i \omega_k}$ are the solutions to
+
+$$
+  z^N = 1,
+$$
+
+equally spaced on the unit circle. Here is an illustration for $N = 8$:
 
 +++
+```{code-cell}
+N = 8
+angles = np.linspace(0, 2*np.pi, 128, endpoint=True)
+root_angles = 2 * np.pi / N * np.arange(N)
+fig, ax = plt.subplots(1, 1, figsize=(8, 8))
 
-Roots of unity picture
+ax.spines[['left', 'bottom']].set_position('center')
+ax.spines[['right', 'top']].set_color('none')
+ax.xaxis.set_ticks_position('bottom')
+ax.yaxis.set_ticks_position('left')
 
+ax.plot(np.cos(angles), np.sin(angles))
+ax.plot(np.cos(root_angles), np.sin(root_angles), 'o', markersize=20)
+ax.set_aspect(1)
+```
 +++
 
 It turns out that such sinusoids are orthogonal. Indeed, denoting $\nu_{k}[n] = e^{i \omega_k n}$, we get that
@@ -81,13 +97,29 @@ $$
    =
    \begin{cases}
       N & k = \ell \\
-      0 & k \neq \ell
-   \end{cases}.
+      0 & k \neq \ell.
+   \end{cases}
 $$
+
+```{admonition} Exercise
+Write a code snippet to test this orthogonality numerically.
+```
+
+This finally allows us to define the forward and the inverse discrete Fourier transform (DFT) as
+
+$$
+  X[k] = \sum_{n = 0}^{N - 1} x[n] e^{-i \frac{2\pi}{N} nk}
+  \quad
+  \longleftrightarrow
+  \quad
+  x[n] = \frac{1}{N} \sum_{k = 0}^{N - 1} X[k] e^{i \frac{2\pi}{N} kn}.
+$$
+
+
 
 ## An alternative view of the DFT
 
-Is there an alternative intuitive derivation? The answer is again yes. We can obtain DFT as a limit DTFT for periodized signals. The math gets a bit involved, especially if you want to do it carefully, so we won't go into the details. But we can run some code to show it.
+Is there an alternative intuitive derivation of the DFT? Sure there is! We can obtain it as a limit DTFT for periodized signals. The math gets a bit involved, especially if you want to do it carefully, so we won't go into the details. But we can write some code. We begin with a simple triangular pulse of $L$ samples:
 
 ```{code-cell}
 L = 31
@@ -109,7 +141,7 @@ plt.ylabel('$X(\\omega)$');
 ```
 (We are only showing the spectral magnitude for frequencies $\omega \in [0, \pi)$ since for real-valued signals $x[n]$ we have that $X(-\omega) = X(\omega)^\ast$ so that $|X(-\omega)| = |X(\omega)|$.)
 
-We now construct a _periodic extension_ $\tilde{x}[n]$ of $x[n]$: by repeating $x[n]$ a number of times, and compute its DTFT:
+We now construct a _periodic extension_ $\tilde{x}[n]$ of $x[n]$ by repeating $x[n]$ a number of times, and compute its DTFT:
 
 ```{code-cell}
 R_list = [2, 5, 1000] # number of repetitions
@@ -196,7 +228,7 @@ $$
   (x_{\text{ZP}} \circledast_N h)[n] = (x \ast h)[n], \quad \text{for}~n \in \{0, 1, \ldots, 2N - 1\}.
 $$
 
-Zero-padding is part of the broader theme of properly handling boundary conditions in convolution.
+Zero padding is part of the broader theme of properly handling boundary conditions in convolution.
 
 
 [^1]: This is even true for infinite-support discrete time/space signals. Since they are indexed by integers $\mathbb{Z}$ or pairs of integers $\mathbb{Z}^2$, they are countable, and thus spanned by bases with much fewer elements than the interval $[-\pi, \pi)$ which has as many elements as the real line.
