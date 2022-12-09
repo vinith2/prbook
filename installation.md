@@ -5,6 +5,7 @@ jupytext:
     format_name: myst
     format_version: 0.13
     jupytext_version: 1.14.1
+    
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -68,15 +69,38 @@ This will generate a functional HTML site. The site is placed in  ```./prbook/_b
 
 
 ## Scribing 
-This optional task for students to get extra credit or for people who missed the some of the lectures. You will be assigned certain lectures to scribe. Based on the assigned lectures you need to fill the corresponding markup document with python code snippets and explanations pertaining to the lecture. If a file  for the lecture is not present you are free to create a new file with an appropriate name, however it better to give us a prior notification. For reference regarding the style, quality and quantity of explanations for each topic you can look at [Introduction](./introduction.md), [Denoising](./denoise-deblur.html#denoising), [Wiener filter](./denoise-deblur.html#wiener-filter). 
+This optional task for students to get extra credit or for people who missed the some of the lectures. You will be assigned certain lectures to scribe. Based on the assigned lectures you need to fill the corresponding markup document with python code snippets and explanations pertaining to the lecture. If a file  for the lecture is not present you are free to create a new file with an appropriate name, however it is better to give us a prior notification. Next, you need to add the name of the file in ```_toc.yml``` in the appropriate order.  For reference regarding the style, quality and quantity of explanations for each topic you can look at [Introduction](./introduction.md), [Denoising](./denoise-deblur.html#denoising), [Wiener filter](./denoise-deblur.html#wiener-filter). 
 
 ### Editing and Style Convention
 The prefered way of editing and creating the lecture notes is through markdown files as done in ```prbook```. But you can create the books using jupyter notebooks as well.  You can look at ```./prbook/introduction.md``` on how to write down the markdown files which contains python snippets from the slides and explanation. Latex macros from ```./prbook/_config.yml```, should be used for equations in the explanation part of the text. The notation scheme used in [Denoising and deblurring](./denoise-deblur.html) should be followed whenever possible. 
 
 ### Submitting 
-To upload your edits and books, the preferred approach is to submit a pull request (PR), with your changes. Be specific in your commit messages. We will review your changes and based on the quality of work we either ask you to improve on it or accept the changes. If the PR is reviewed and merged into the main branch, the task is considered successful and you obtain full points for the scribing task assigned to you. 
+To upload your edits and books, the preferred approach is to submit a pull request (PR), with your changes. An example PR is given [below](#pull-request-Example ) Be specific in your commit messages. We will review your changes and based on the quality of work we either ask you to improve on it or accept the changes. If the PR is reviewed and merged into the main branch, the task is considered successful and you obtain full points for the scribing task assigned to you. 
 
 An alternative way to submit your work is through email. Then we evaluate and inform you whether it is acceptable or not. 
+
+
+### Pull request Example
+
+Here we look at an example pull request to change a word in [Installation](./installation.md). First you open the [github repo](https://github.com/swing-research/prbook) in your browser. You need to have a github account to submit your changes. Once in prbook page gihtub, you need to fork it (Click on the top right button with the name ```Fork```). This makes a copy of the repository in your account. Once forked, you need to clone the personal copy of the reposity in your local machine. The clone command looks like:
+```
+git clone git@github.com:< your github username >/prbook.git
+```
+Now you have your personal copy of the ```prbook``` downloaded in your local machine.  Now you open the file ```./prbook/installation.md``` and got to line '86' and change the test from '<your github username>' to '<username>' or you change it your github user name. Once changed. You need push the local changes to the server. You can run the following command 
+
+
+```
+git add ./instruction.md 
+git commit -m 'changing the user name in line 89' 
+git push
+```
+
+**NOTE:**
+Use an specific commit messages, this helps in debugging.
+
+This uploads the changes to your copy of prbook in the github server. Next  
+
+
 
 
 
